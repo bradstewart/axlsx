@@ -31,6 +31,19 @@ module Axlsx
     # @return [Boolean]
     attr_reader :smooth
 
+    # Set the lines dash type
+    # @return [Symbol] The dash type
+    # @note
+    #  The following are allowed
+    #    :solid
+    #    :dot
+    #    :dash
+    #    :lg_dash
+    #    :dash_dot
+    #    :lg_dash_dot
+    #    :lg_dash_dot_dot
+    attr_reader :line_type
+
     # Creates a new series
     # @option options [Array, SimpleTypedList] data
     # @option options [Array, SimpleTypedList] labels
@@ -38,6 +51,7 @@ module Axlsx
     def initialize(chart, options={})
       @show_marker = false
       @marker_symbol = options[:marker_symbol] ? options[:marker_symbol] : :default
+      @line_type = :solid
       @smooth = false
       @labels, @data = nil, nil
       super(chart, options)
@@ -68,23 +82,29 @@ module Axlsx
       @smooth = v
     end
 
+    # @see line_type
+    def line_type=(v) 
+      RestrictionValidator.validate "LineSeries.line_type", [:solid, :dot, :dash, :lg_dash, :dash_dot, :lg_dash_dot, :lg_dash_dot_dot], v
+      @line_type = v
+    end
+    
     # Serializes the object
     # @param [String] str
     # @return [String]
     def to_xml_string(str = '')
       super(str) do
+
+        str << '<c:spPr>'
+        str << '<a:ln>'
         if color
-          str << '<c:spPr><a:solidFill>'
-          str << ('<a:srgbClr val="' << color << '"/>')
-          str << '</a:solidFill>'
-          str << '<a:ln w="28800">'
           str << '<a:solidFill>'
           str << ('<a:srgbClr val="' << color << '"/>')
           str << '</a:solidFill>'
-          str << '</a:ln>'
-          str << '<a:round/>'
-          str << '</c:spPr>'
         end
+        str << ('<a:prstDash val="' << line_type.to_s.camelize(:lower) <<'"/>')
+        str << '</a:ln>'
+        str << '<a:round/>'
+        str << '</c:spPr>'
 
         if !@show_marker
           str << '<c:marker><c:symbol val="none"/></c:marker>'
@@ -99,6 +119,7 @@ module Axlsx
     end
 
     private
+    # def style_xml_string
 
     # assigns the data for this series
     def data=(v) DataTypeValidator.validate "Series.data", [NumDataSource], v; @data = v; end
