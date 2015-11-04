@@ -1,5 +1,9 @@
 language: ruby
+sudo: false
+cache: bundler
 bundler_args: --without profile
+env:
+  - JRUBY_OPTS="-Xcli.debug=true --debug"
 notifications:
   irc: "irc.freenode.org#axlsx"
   email:
@@ -9,15 +13,16 @@ notifications:
 rvm:
   - 1.9.2
   - 1.9.3
-  - 2.0.0
-  - 2.1.0
+  - 2.0
+  - 2.1
+  - 2.2
   - rbx
   - jruby-19mode
+  - jruby-9.0.0.0
   - ruby-head
   - jruby-head
 matrix:
   allow_failures:
     - rvm: ruby-head
+    - rvm: jruby-9.0.0.0
     - rvm: jruby-head
-before_install:
-  - gem install nokogiri -- --with-cflags='--std=gnu99'

@@ -2,7 +2,7 @@ Axlsx: Office Open XML Spreadsheet Generation
 ====================================
 [![Build Status](https://secure.travis-ci.org/randym/axlsx.png?branch=master)](http://travis-ci.org/randym/axlsx/)
 
-If you are using axlsx for comercial purposes, or just want to show your
+If you are using axlsx for commercial purposes, or just want to show your
 appreciation for the gem, please don't hesitate to make a donation.
 
 [![Click here to lend your support to: axlsx and make a donation at www.pledgie.com !](http://www.pledgie.com/campaigns/17814.png?skin_name=chrome)](http://www.pledgie.com/campaigns/17814)
@@ -52,7 +52,7 @@ If you are working with ActiveAdmin see:
 
 [activeadmin-axlsx](http://github.com/randym/activeadmin-axlsx)
 
-It provies a plugin and dsl for generating downloadable reports.
+It provides a plugin and dsl for generating downloadable reports.
 
 The examples directory contains a number of more specific examples as
 well.
@@ -153,7 +153,7 @@ There is much, much more you can do with this gem. If you get stuck, grab me on 
 
 This gem is 100% documented with YARD, an exceptional documentation library. To see documentation for this, and all the gems installed on your system use:
 
-     gem install yard
+     gem install yard kramdown
 
      yard server -g
 
@@ -231,16 +231,15 @@ related to themes, which axlsx does not implement at this time.
    - you must set 'use_shared_strings' to true. This is most
      conveniently done just before rendering by calling Package.use_shared_strings = true prior to serialization.
 
-```ruby
-p = Axlsx::Package.new
-p.workbook.add_worksheet(:name => "Basic Worksheet") do |sheet|
-  sheet.add_row ["First Column", "Second", "Third"]
-  sheet.add_row [1, 2, 3]
-end
-p.use_shared_strings = true
-p.serialize('simple.xlsx')
-```
-
+  ```ruby
+  p = Axlsx::Package.new
+  p.workbook.add_worksheet(:name => "Basic Worksheet") do |sheet|
+    sheet.add_row ["First Column", "Second", "Third"]
+    sheet.add_row [1, 2, 3]
+  end
+  p.use_shared_strings = true
+  p.serialize('simple.xlsx')
+  ```
    - charts do not render
 
 
